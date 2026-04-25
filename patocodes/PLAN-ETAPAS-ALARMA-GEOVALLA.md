@@ -12,10 +12,10 @@
 
 ## Etapa 0 — Repositorio, convención y criterio de hecho
 
-- [ ] Estructura de carpetas acordada (p. ej. `data/`, `domain/`, `ui/`, `location/`).
-- [ ] Nombre del paquete, `minSdk`/`targetSdk` y notas de permisos en README corto.
-- [ ] Alinear el documento `patocodes/BUENAS-PRACTICAS-AGENTES.md` con flujo de reviews y testeos.
-- **Criterio de cierre:** el equipo sabe dónde vive el código, cómo se llama el módulo de ubicación, y qué rama/PRs usar (ver buenas prácticas).
+- [x] Estructura de carpetas acordada (p. ej. `data/`, `domain/`, `ui/`, `location/` en `app/src/.../com/patocodes/geoalarm/`).
+- [x] Nombre del paquete, `minSdk`/`targetSdk` y notas de permisos en README y `AGENTS.md`.
+- [x] Alinear el documento `patocodes/BUENAS-PRACTICAS-AGENTES.md` con flujo de reviews y testeos.
+- **Criterio de cierre:** el equipo sabe dónde vive el código, cómo se llama el módulo de ubicación, y qué rama/PRs usar (ver buenas prácticas). *En este repo: módulo `app` + `AGENTS.md`.*
 
 ---
 
