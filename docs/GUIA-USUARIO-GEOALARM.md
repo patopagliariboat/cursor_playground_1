@@ -85,6 +85,6 @@ Cada fila: **alinear con el commit** que introduce el cambio (mensaje o hash cor
 | Fecha (UTC) | Referencia | Resumen del cambio (usuario) |
 |--------------|------------|-----------------------------|
 | 2026-04-27 | `82feef4` (rama `cursor/etapa-1-map-flow-137a`) | Primera guía. Etapa 1: mapa o coordenadas manuales, radio, activar / desactivar, persistencia. Sin GPS ni alarma acústica. |
-| 2026-04-27 | `2787c2d` | Guía ampliada con instalación detallada; documento de diseño visual en `docs/`; `AGENTS.md` fija la regla de actualizar esta guía en cada cambio de producto. |
+| 2026-04-27 | Documentación `docs/` (abril 2026) | Guía ampliada con instalación detallada; `DISENO-VISUAL-GEOALARM.md`; en `AGENTS.md` queda la regla de actualizar esta guía en cada cambio de producto. |
 
 *Instrucción para mantenedores del repo:* al hacer merge de un PR que modifique el comportamiento, instalación o requisitos, añadí **una fila** arriba (tabla con fecha; commit o descripción) y, si aplica, actualizá las secciones de **Requisitos** o **Cómo usar**. Ver [`../AGENTS.md`](../AGENTS.md).
