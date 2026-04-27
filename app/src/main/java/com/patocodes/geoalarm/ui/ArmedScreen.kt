@@ -48,6 +48,10 @@ fun ArmedScreen(
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth(),
         )
+        Spacer(modifier = Modifier.height(16.dp))
+        ArmedLocationInfo(
+            modifier = Modifier.fillMaxWidth(),
+        )
         Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = stringResource(R.string.radius_label, zone.radiusMeters.toInt()),

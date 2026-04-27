@@ -29,7 +29,7 @@ Si el cambio es **solo estético** (colores, componentes, sin cambiar pasos de u
 | `minSdk` | 26 |
 | `targetSdk` / `compileSdk` | 35 |
 
-`AndroidManifest` declara **INTERNET** (mapas). Los **permisos de ubicación** se añaden en la Etapa 2.
+`AndroidManifest` declara **INTERNET** y `ACCESS_FINE` / `ACCESS_COARSE` / `ACCESS_BACKGROUND_LOCATION` (Etapa 2).
 
 ### Mapas (Etapa 1)
 
@@ -54,8 +54,9 @@ Ver `local.properties.example`.
 - Referenciar en la descripción de la PR la **etapa** del plan completada o avanzada.
 - Si el PR altera el uso o la instalación, enlazar la actualización de [`docs/GUIA-USUARIO-GEOALARM.md`](docs/GUIA-USUARIO-GEOALARM.md) en la descripción.
 
-## Estado actual (Etapa 1)
+## Estado actual (Etapa 2 en curso o completada en rama `cursor/etapa-2-location-perms-137a`)
 
-- **DataStore** (`AlarmZoneRepository`): lat/lon, radio, `armed`.
-- **Navegación** `Setup` ↔ `Armed`; mapa con **Maps Compose** si hay `MAPS_API_KEY`.
-- Sin geovalla ni GPS de dispositivo todavía (`location/` reservado).
+- **DataStore** y flujo de pantallas como en Etapa 1.
+- **Permisos** al activar: foreground + (Android 10+) background; Ajustes del sistema si queda denegado de forma fija; opción *Armar de todos modos* sin “siempre”.
+- **Mapa**: posición de usuario, botón *Mi ubicación*; Fused one-shot. **Pantalla armada**: mensajes de estado de permisos y accesos directos a solicitar.
+- Aún **sin** `GeofencingClient` / FGS (Etapa 3+).

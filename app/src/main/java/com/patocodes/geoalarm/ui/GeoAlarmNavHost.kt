@@ -16,6 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.patocodes.geoalarm.data.AlarmZoneRepository
+import com.patocodes.geoalarm.ui.location.LocationArmPermissionHandler
 import kotlinx.coroutines.flow.first
 
 @Composable
@@ -42,41 +43,41 @@ fun GeoAlarmNavHost(
 
     val navController = rememberNavController()
     val vm: GeoAlarmViewModel = viewModel(factory = GeoAlarmViewModel.factory(repository))
-
-    NavHost(
-        navController = navController,
-        startDestination = startRoute!!,
-        modifier = modifier,
-    ) {
-        composable(Route.Setup) {
-            MapSetupScreen(
-                viewModel = vm,
-                onActivate = {
-                    vm.arm {
-                        navController.navigate(Route.Armed) {
-                            popUpTo(Route.Setup) {
-                                inclusive = false
-                            }
-                            launchSingleTop = true
-                        }
-                    }
-                },
-            )
+    val onArmedNav: () -> Unit = {
+        navController.navigate(Route.Armed) {
+            popUpTo(Route.Setup) { inclusive = false }
+            launchSingleTop = true
         }
-        composable(Route.Armed) {
-            ArmedScreen(
-                viewModel = vm,
-                onDisarm = {
-                    vm.disarm {
-                        navController.navigate(Route.Setup) {
-                            popUpTo(Route.Armed) {
-                                inclusive = true
+    }
+
+    LocationArmPermissionHandler(
+        viewModel = vm,
+        onArmedNavigation = onArmedNav,
+    ) { handle ->
+        NavHost(
+            navController = navController,
+            startDestination = startRoute!!,
+            modifier = modifier,
+        ) {
+            composable(Route.Setup) {
+                MapSetupScreen(
+                    viewModel = vm,
+                    onActivate = { handle.onActivateTapped() },
+                )
+            }
+            composable(Route.Armed) {
+                ArmedScreen(
+                    viewModel = vm,
+                    onDisarm = {
+                        vm.disarm {
+                            navController.navigate(Route.Setup) {
+                                popUpTo(Route.Armed) { inclusive = true }
+                                launchSingleTop = true
                             }
-                            launchSingleTop = true
                         }
-                    }
-                },
-            )
+                    },
+                )
+            }
         }
     }
 }

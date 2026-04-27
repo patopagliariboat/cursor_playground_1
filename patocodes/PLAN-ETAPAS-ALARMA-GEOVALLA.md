@@ -35,17 +35,22 @@
 
 ## Etapa 2 — Permisos y modelo de “siempre en segundo plano”
 
-**Qué se construye**
+- [x] Flujo: diálogos in-app, `ACCESS_FINE` + `COARSE` (foreground), luego en Android 10+ `ACCESS_BACKGROUND_LOCATION` y opción *Armar de todos modos* si se niega.
+- [x] Pantalla de mapa: “Mi ubicación” + capa *my location* (si hay permiso); Fused un-shot para centrar el pin.
+- [x] Pantalla armada: resumen de estado de permisos y botones de solicitar.
+- [ ] (Opcional) comprobación de optimización de batería y link a ajustes del OEM — no implementado; deferible a Etapa 4/6.
+
+**Qué se construye** (resumen de referencia)
 
 - Flujo por etapas: `ACCESS_FINE_LOCATION` (y `COARSE` si aplica) → luego explicación in-app y solicitud de **“Permitir todo el tiempo”** y `ACCESS_BACKGROUND_LOCATION` en Android 10+.
-- Documentación en código o README: por qué hace falta, qué pasa si el usuario niega.
+- Documentación en `docs/GUIA-USUARIO-GEOALARM.md` y cadenas in-app: por qué hace falta, qué pasa si el usuario niega.
 - (Opcional) comprobación de optimización de batería y link a ajustes del sistema.
 
-**Tecnologías:** `ActivityResultContracts`, `PermissionController` patterns, comprobación de `background location` availability.
+**Tecnologías:** `ActivityResultContracts`, `LocationServices` + Fused, comprobación en `LocationPermissionState`.
 
 **Datos a recoger:** tasa de aceptación en dispositivo de prueba; errores en log (`SecurityException`).
 
-**Criterio de cierre:** en un dispositivo real, con negación parcial, la app degrada de forma controlada (mensaje, no crash).
+**Criterio de cierre:** en un dispositivo real, con negación parcial, la app degrada de forma controlada (mensaje, no crash). *Cubierto; ver rama `cursor/etapa-2-location-perms-137a`.*
 
 ---
 

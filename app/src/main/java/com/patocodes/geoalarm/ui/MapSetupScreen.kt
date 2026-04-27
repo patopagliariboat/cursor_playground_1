@@ -1,5 +1,6 @@
 package com.patocodes.geoalarm.ui
 
+import android.Manifest
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,13 +8,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,19 +26,31 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.patocodes.geoalarm.BuildConfig
 import com.patocodes.geoalarm.R
 import com.patocodes.geoalarm.domain.AlarmZone
+import com.patocodes.geoalarm.location.LocationPermissionState
 
 @Composable
 fun MapSetupScreen(
@@ -42,7 +58,45 @@ fun MapSetupScreen(
     onActivate: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
     val zone by viewModel.zone.collectAsStateWithLifecycle()
+    var showMapLocationRationale by remember { mutableStateOf(false) }
+    var locationPermVersion by remember { mutableStateOf(0) }
+
+    val hasForeground = remember(locationPermVersion) {
+        LocationPermissionState.hasForegroundAccess(context)
+    }
+
+    val owner = LocalLifecycleOwner.current
+    DisposableEffect(owner) {
+        val obs = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                locationPermVersion++
+            }
+        }
+        owner.lifecycle.addObserver(obs)
+        onDispose { owner.lifecycle.removeObserver(obs) }
+    }
+    val fused = remember { LocationServices.getFusedLocationProviderClient(context) }
+
+    val mapForegroundPerms = remember {
+        arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+        )
+    }
+    val mapLocationLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions(),
+    ) { _ ->
+        locationPermVersion++
+        if (LocationPermissionState.hasForegroundAccess(context)) {
+            moveMapToDeviceLocation(
+                context = context,
+                fused = fused,
+                onLocation = { lat, lon -> viewModel.setPin(lat, lon) },
+            )
+        }
+    }
     val markerState = remember(zone.latitude, zone.longitude) {
         MarkerState(LatLng(zone.latitude, zone.longitude))
     }
@@ -72,6 +126,29 @@ fun MapSetupScreen(
 
     val mapApiOk = BuildConfig.MAPS_API_KEY.isNotBlank()
 
+    if (showMapLocationRationale) {
+        AlertDialog(
+            onDismissRequest = { showMapLocationRationale = false },
+            title = { Text(stringResource(R.string.map_perm_rationale_title)) },
+            text = { Text(stringResource(R.string.map_perm_rationale_body)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showMapLocationRationale = false
+                        mapLocationLauncher.launch(mapForegroundPerms)
+                    },
+                ) {
+                    Text(stringResource(R.string.perm_action_continue))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showMapLocationRationale = false }) {
+                    Text(stringResource(R.string.perm_action_not_now))
+                }
+            },
+        )
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -79,10 +156,14 @@ fun MapSetupScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         if (mapApiOk) {
+            val mapProperties = remember(hasForeground) {
+                MapProperties(isMyLocationEnabled = hasForeground)
+            }
             GoogleMap(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth(),
+                properties = mapProperties,
                 cameraPositionState = cameraPositionState,
                 onMapClick = { latLng ->
                     viewModel.setPin(latLng.latitude, latLng.longitude)
@@ -92,6 +173,24 @@ fun MapSetupScreen(
                     state = markerState,
                     title = stringResource(R.string.map_pin_title),
                 )
+            }
+            OutlinedButton(
+                onClick = {
+                    if (hasForeground) {
+                        moveMapToDeviceLocation(
+                            context = context,
+                            fused = fused,
+                            onLocation = { lat, lon -> viewModel.setPin(lat, lon) },
+                        )
+                    } else {
+                        showMapLocationRationale = true
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 4.dp),
+            ) {
+                Text(stringResource(R.string.map_action_my_location))
             }
         } else {
             NoMapFallback(
@@ -216,4 +315,28 @@ private fun NoMapFallback(
             Text(stringResource(R.string.action_apply_coords))
         }
     }
+}
+
+/** One-shot last known / current location to center the map pin. */
+private fun moveMapToDeviceLocation(
+    context: android.content.Context,
+    fused: com.google.android.gms.location.FusedLocationProviderClient,
+    onLocation: (Double, Double) -> Unit,
+) {
+    if (!LocationPermissionState.hasForegroundAccess(context)) {
+        return
+    }
+    val cts = CancellationTokenSource()
+    fused.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY, cts.token)
+        .addOnSuccessListener { loc ->
+            if (loc != null) {
+                onLocation(loc.latitude, loc.longitude)
+            } else {
+                fused.lastLocation.addOnSuccessListener { last ->
+                    if (last != null) {
+                        onLocation(last.latitude, last.longitude)
+                    }
+                }
+            }
+        }
 }

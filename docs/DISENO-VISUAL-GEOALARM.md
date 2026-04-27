@@ -89,4 +89,10 @@ Boceto lógico (no escala a píxel):
 
 ---
 
-*Última edición (doc):* 2026-04-27 — creado como borrador junto a la guía de usuario.
+*Última edición (doc):* 2026-04-28 — añadido hilo de flujos de **permisos** (diálogos, pantalla armada con estado) como parte del sistema visual.
+
+## 7) Flujos de permisos (Etapa 2, referencia UX)
+
+- **Rationale** antes de `Activity` del sistema: título + texto corto + *Continuar* / *Ahora no*.
+- Tras “Activar” en Android 10+: segundo diálogo para **“Permitir todo el tiempo”**; si el usuario elige *Ahora no*, diálogo **Armar de todos modos** con salida a Ajustes si el permiso quedó bloqueado.
+- **Pantalla armada:** bloque de **estado** (líneas de texto) + botones *Conceder…* en línea con Material 3; no rivalizar con el CTA *Desactivar* (mantener *Desactivar* como acción de salida clara).

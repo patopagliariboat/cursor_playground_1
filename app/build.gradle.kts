@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.google.play.services.maps)
+    implementation(libs.google.play.services.location)
     implementation(libs.google.maps.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
