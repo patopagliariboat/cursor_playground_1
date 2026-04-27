@@ -5,4 +5,4 @@ Repositorio que incluye documentación en `patocodes/` y la app **GeoAlarm** (An
 - **Plan y etapas:** [`patocodes/PLAN-ETAPAS-ALARMA-GEOVALLA.md`](patocodes/PLAN-ETAPAS-ALARMA-GEOVALLA.md)  
 - **Cómo construir y convención de carpetas:** [`AGENTS.md`](AGENTS.md)  
 
-`local.properties` con `sdk.dir=...` no está versionado; creá uno local con la ruta al Android SDK.
+`local.properties` con `sdk.dir=...` (y opcional `MAPS_API_KEY` — ver `AGENTS.md` y `local.properties.example`) no está versionado; creá uno local con la ruta al Android SDK.

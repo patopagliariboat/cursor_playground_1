@@ -21,17 +21,15 @@
 
 ## Etapa 1 — App mínima: mapa, radio, activar
 
-**Qué se construye**
+- [x] Pantalla (Compose): mapa (`Maps Compose` si `MAPS_API_KEY` en `local.properties`), pin y toque para elegir coordenadas; control de **radio** (slider + presets 100 / 300 / 500 m).
+- [x] Botón **Activar** con **DataStore**: latitud, longitud, radio, `armed=true`.
+- [x] Navegación a pantalla **Alarma armada** con punto y radio; **Desactivar** vuelve al mapa.
 
-- Pantalla (Compose): mapa, pin o tap para elegir coordenadas, control de **radio** (slider y/o presets: 100 / 300 / 500 m).
-- Botón **Activar** que persiste estado localmente (p. ej. `DataStore` o `SharedPreferences` mínimo): latitud, longitud, radio, `enabled=true`.
-- Navegación básica a una pantalla **Alarma armada** (o mismo flujo con estado) que muestre: modo activo, referencia al punto, radio.
-
-**Tecnologías:** Compose, `Navigation-Compose` si hay más de una pantalla, `remember` + ViewModel, material3.
+**Tecnologías:** Compose, Navigation, ViewModel, DataStore, Maps Compose + Play services maps (clave opcional).
 
 **Datos a recoger (MVP de instrumentación, opcional ya aquí):** tiempo desde cold start hasta mapa interactivo; fallos al pedir permisos (screenshot o log).
 
-**Criterio de cierre:** flujo a–b–c completo en UI, sin lógica de geovalla aún, con almacenamiento de la intención del usuario.
+**Criterio de cierre:** flujo a–b–c completo en UI, sin lógica de geovalla aún, con almacenamiento de la intención del usuario. *Hecho en `cursor/etapa-1-map-flow-137a`.*
 
 ---
 

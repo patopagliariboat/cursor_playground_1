@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">GeoAlarm</string>
+    <string name="map_pin_title">Punto de alarma</string>
+    <string name="map_needs_api_key">Sin MAPS_API_KEY: podés ingresar latitud y longitud a mano. Con clave (AGENTS.md) se muestra el mapa.</string>
+    <string name="label_latitude">Latitud</string>
+    <string name="label_longitude">Longitud</string>
+    <string name="action_apply_coords">Aplicar coordenadas</string>
+    <string name="radius_label">Radio: %1$d m</string>
+    <string name="radius_meters_short">%1$d m</string>
+    <string name="coords_line">Coordenadas: %1$.5f, %2$.5f</string>
+    <string name="action_activate">Activar alarma</string>
+    <string name="action_disarm">Desactivar alarma</string>
+    <string name="armed_title">Alarma armada</string>
+    <string name="armed_subtitle">La geovalla real se implementa en etapas posteriores. El punto y el radio quedan guardados.</string>
 </resources>
