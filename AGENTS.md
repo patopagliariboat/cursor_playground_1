@@ -4,6 +4,23 @@
 
 Aplicación Android **nativa (Kotlin, Jetpack Compose)** para alarma por geovalla. El plan de etapas y criterios de cierre está en [`patocodes/PLAN-ETAPAS-ALARMA-GEOVALLA.md`](patocodes/PLAN-ETAPAS-ALARMA-GEOVALLA.md). Convención de capas: [`patocodes/BUENAS-PRACTICAS-AGENTES.md`](patocodes/BUENAS-PRACTICAS-AGENTES.md).
 
+## Documentación para usuarios y diseño
+
+| Documento | Contenido |
+|-----------|-----------|
+| [`docs/GUIA-USUARIO-GEOALARM.md`](docs/GUIA-USUARIO-GEOALARM.md) | Pasos de **instalación**, **uso** de lo implementado, **requisitos**, **FAQ** e **historial** de cambios orientados al usuario final. |
+| [`docs/DISENO-VISUAL-GEOALARM.md`](docs/DISENO-VISUAL-GEOALARM.md) | Dirección **estética**: pantallas, paleta sugerida, layout de ejemplo, checklist visual. |
+
+## Mantenimiento del documento de usuario (obligatorio en cambios de producto)
+
+Cuando un **commit o PR** modifique **comportamiento visible**, **requisitos de instalación**, **permisos**, **flujos de pantalla** o **nombre de acciones** en la app:
+
+1. **Actualizá** [`docs/GUIA-USUARIO-GEOALARM.md`](docs/GUIA-USUARIO-GEOALARM.md) en el **mismo commit** (o en el commit de merge del PR), de forma que quede alineado con el código.
+2. Añadí **una fila** a la tabla **Historial** al final de esa guía (fecha en UTC, referencia al commit o al mensaje corto, resumen en lenguaje de usuario).
+3. Si el cambio afecta **solo a desarrolladores** (Gradle, claves, `adb`), actualizá también las secciones **Requisitos** o **Cómo instalar** de la guía y, si aplica, este `AGENTS.md`.
+
+Si el cambio es **solo estético** (colores, componentes, sin cambiar pasos de uso), actualizá preferentemente [`docs/DISENO-VISUAL-GEOALARM.md`](docs/DISENO-VISUAL-GEOALARM.md).
+
 ## Paquete y versiones (Etapa 0)
 
 | Campo | Valor |
@@ -35,6 +52,7 @@ Ver `local.properties.example`.
 
 - Preferir ramas `feature/etapa-N-...` o `cursor/...-137a` según el convencionado en el repositorio.
 - Referenciar en la descripción de la PR la **etapa** del plan completada o avanzada.
+- Si el PR altera el uso o la instalación, enlazar la actualización de [`docs/GUIA-USUARIO-GEOALARM.md`](docs/GUIA-USUARIO-GEOALARM.md) en la descripción.
 
 ## Estado actual (Etapa 1)
 

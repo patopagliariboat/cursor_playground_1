@@ -9,7 +9,9 @@ Objetivo: que el desarrollo (humano o asistido) sea **predecible**, **auditable*
 | Archivo / artefacto | Propósito |
 |---------------------|------------|
 | `PLAN-ETAPAS-ALARMA-GEOVALLA.md` | Fuente de verdad de la **ruta y criterios de cierre** por etapa. No duplicar el plan en issues largos: enlazar. |
-| `AGENTS.md` o `CONTRIBUTING.md` (raíz o `patocodes/`) | Cómo correr, packages, y **regla**: una etapa = una rama, una PR, checklist de la etapa. |
+| `docs/GUIA-USUARIO-GEOALARM.md` | **Guía de usuario** e **historial** de lo que hace la app: actualizar en el mismo commit cuando cambie el comportamiento, instalación o requisitos (ver `AGENTS.md`). |
+| `docs/DISENO-VISUAL-GEOALARM.md` | Borrador de **dirección estética** (pantallas, paleta, layout); actualizar si cambia UI de marca. |
+| `AGENTS.md` o `CONTRIBUTING.md` (raíz o `patocodes/`) | Cómo correr, packages, y **regla**: una etapa = una rama, una PR, checklist de la etapa; incluye la regla de mantener la guía de usuario. |
 | `.editorconfig` | Indentación, finales de línea, coherencia entre PRs. |
 | `build.gradle.kts` / `settings.gradle.kts` | Versiones de AGP, Kotlin, Compose, `compileSdk` — documentar saltos de versión en el cuerpo de la PR. |
 | `config/detekt.yml` o `lint` activado en CI (cuando exista) | Misma barra de estilo en cada iteración. |
