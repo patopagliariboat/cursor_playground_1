@@ -1,0 +1,9 @@
+# Copy to local.properties (not committed) and adjust paths.
+
+# Android SDK (required to build)
+# sdk.dir=C\:\\Users\\YOUR_USER\\AppData\\Local\\Android\\Sdk
+
+# Google Maps SDK for Android — create a key in Google Cloud Console with
+# "Maps SDK for Android" enabled, package com.patocodes.geoalarm, SHA-1 for debug.
+# Without this, the setup screen still works with default coordinates and radius.
+# MAPS_API_KEY=YOUR_KEY_HERE
